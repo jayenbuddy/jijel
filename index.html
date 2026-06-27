@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Streaming Gateway</title>
+    <title>NontonYuk</title>
     
     <link rel="icon" type="image/png" href="https://github.githubassets.com/favicons/favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@800;900&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
             --text-muted: #9ca3af;
             --accent-primary: #3b82f6;
             --accent-gradient: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-            --shape-bg: rgba(59, 130, 246, 0.04);
+            --shape-bg: rgba(59, 130, 246, 0.02); /* Lebih redup */
         }
 
         body {
@@ -34,7 +34,7 @@
             position: relative;
         }
 
-        /* --- EFEK BACKGROUND MULTI-LAYER --- */
+        /* --- EFEK BACKGROUND AMBIENT REDUP --- */
         .bg-wrapper {
             position: fixed;
             top: 0;
@@ -52,39 +52,19 @@
             height: 140%;
             top: -20%;
             left: -20%;
+            /* Opacity diturunkan menjadi 0.12 agar tidak terlalu terang */
             background-image: 
-                radial-gradient(circle at 15% 25%, rgba(13, 148, 136, 0.2) 0%, transparent 45%),
-                radial-gradient(circle at 80% 35%, rgba(37, 99, 235, 0.2) 0%, transparent 45%),
-                radial-gradient(circle at 45% 75%, rgba(79, 70, 229, 0.15) 0%, transparent 50%);
-            filter: blur(25px);
+                radial-gradient(circle at 15% 25%, rgba(13, 148, 136, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 80% 35%, rgba(37, 99, 235, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 45% 75%, rgba(79, 70, 229, 0.1) 0%, transparent 50%);
+            filter: blur(30px);
             mix-blend-mode: screen;
             animation: auroraSlow 25s infinite alternate ease-in-out;
         }
 
         @keyframes auroraSlow {
             0% { transform: rotate(0deg) scale(1); }
-            100% { transform: rotate(45deg) scale(1.1); }
-        }
-
-        .tech-shape {
-            position: absolute;
-            background: var(--shape-bg);
-            border: 1px solid rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(2px);
-            border-radius: 12px;
-            animation: floatingShapes 16s infinite ease-in-out;
-        }
-
-        .shape-1 { width: 45px; height: 45px; top: 15%; left: 12%; animation-duration: 14s; }
-        .shape-2 { width: 70px; height: 70px; top: 48%; right: 10%; border-radius: 18px; animation-duration: 20s; animation-delay: -3s; }
-        .shape-3 { width: 55px; height: 55px; bottom: 12%; left: 25%; animation-duration: 16s; animation-delay: -7s; }
-        .shape-4 { width: 35px; height: 35px; top: 20%; right: 25%; border-radius: 50%; animation-duration: 12s; } 
-        .shape-5 { width: 80px; height: 80px; bottom: 25%; right: 30%; animation-duration: 22s; animation-delay: -5s; }
-
-        @keyframes floatingShapes {
-            0% { transform: translateY(0px) rotate(0deg) scale(1); opacity: 0.3; }
-            50% { transform: translateY(-35px) rotate(45deg) scale(1.05); opacity: 0.6; border-color: rgba(59, 130, 246, 0.1); }
-            100% { transform: translateY(0px) rotate(90deg) scale(1); opacity: 0.3; }
+            100% { transform: rotate(45deg) scale(1.05); }
         }
 
         /* --- TATA LETAK UTAMA --- */
@@ -94,20 +74,18 @@
             z-index: 1;
         }
 
-        /* System Page/Tab */
+        /* Sistem Animasi Halaman SPA */
         .page {
             display: none;
             opacity: 0;
-            transform: translateY(15px);
+            transform: translateY(8px);
+            transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .page.active {
             display: block;
-            animation: fadeInContent 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes fadeInContent {
-            to { opacity: 1; transform: translateY(0); }
+            opacity: 1;
+            transform: translateY(0);
         }
 
         header {
@@ -127,6 +105,7 @@
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
+        /* Glitch halus disederhanakan agar tidak terlalu silau */
         h1::before, h1::after {
             content: attr(data-text);
             position: absolute;
@@ -138,31 +117,29 @@
         }
 
         h1::before {
-            left: 2px;
-            text-shadow: -2px 0 #ff00c1;
+            left: 1px;
+            text-shadow: -1px 0 rgba(255, 0, 193, 0.5);
             clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim 5s infinite linear alternate-reverse;
+            animation: glitch-anim 6s infinite linear alternate-reverse;
         }
 
         h1::after {
-            left: -2px;
-            text-shadow: -2px 0 #00fff9, 0 2px 3px rgba(0,0,0,0.3);
+            left: -1px;
+            text-shadow: -1px 0 rgba(0, 255, 249, 0.5);
             clip: rect(85px, 450px, 140px, 0);
-            animation: glitch-anim2 5s infinite linear alternate-reverse;
+            animation: glitch-anim2 6s infinite linear alternate-reverse;
         }
 
         @keyframes glitch-anim {
-            0% { clip: rect(15px, 9999px, 66px, 0); transform: skew(0.3deg); }
-            5% { clip: rect(34px, 9999px, 55px, 0); transform: skew(-0.5deg); }
-            10% { clip: rect(70px, 9999px, 105px, 0); transform: skew(0.8deg); }
+            0% { clip: rect(15px, 9999px, 66px, 0); }
+            10% { clip: rect(34px, 9999px, 55px, 0); }
             15% { clip: rect(0px, 0px, 0px, 0); }
             100% { clip: rect(0px, 0px, 0px, 0); }
         }
 
         @keyframes glitch-anim2 {
-            0% { clip: rect(65px, 9999px, 110px, 0); transform: skew(-0.3deg); }
-            5% { clip: rect(5px, 9999px, 40px, 0); transform: skew(0.5deg); }
-            10% { clip: rect(95px, 9999px, 130px, 0); transform: skew(-0.2deg); }
+            0% { clip: rect(65px, 9999px, 110px, 0); }
+            10% { clip: rect(5px, 9999px, 40px, 0); }
             15% { clip: rect(0px, 0px, 0px, 0); }
             100% { clip: rect(0px, 0px, 0px, 0); }
         }
@@ -184,7 +161,7 @@
             text-align: center;
         }
 
-        /* --- TAMPILAN AWAL: TOMBOL MULAI --- */
+        /* --- TOMBOL MULAI --- */
         .center-btn-wrapper {
             display: flex;
             justify-content: center;
@@ -192,47 +169,30 @@
         }
 
         .start-btn {
-            background: rgba(10, 15, 28, 0.6); 
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            padding: 20px 45px;
+            background: rgba(10, 15, 28, 0.4); 
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            padding: 18px 40px;
             border-radius: 50px;
             color: #ffffff;
             font-family: 'Outfit', sans-serif;
             font-weight: 700;
-            font-size: 18px;
+            font-size: 16px;
             letter-spacing: 1px;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .start-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: 0.5s;
         }
 
         .start-btn:hover {
-            border-color: rgba(59, 130, 246, 0.6);
-            transform: translateY(-4px) scale(1.03);
-            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.4);
-            color: #3b82f6;
+            border-color: rgba(59, 130, 246, 0.4);
+            transform: translateY(-2px);
+            background: rgba(15, 23, 42, 0.6);
+            box-shadow: 0 6px 25px rgba(37, 99, 235, 0.15);
         }
 
-        .start-btn:hover::before {
-            left: 100%;
-        }
-
-        /* --- LIST UTAMA SITUS (KOREKSI CENTER & ICON) --- */
+        /* --- LIST SITE MENU --- */
         .site-list {
             display: flex;
             flex-direction: column;
@@ -242,8 +202,8 @@
         .site-item {
             display: flex;
             align-items: center;
-            justify-content: center; /* Membuat isi konten rata tengah */
-            background: rgba(10, 15, 28, 0.4); 
+            justify-content: center;
+            background: rgba(10, 15, 28, 0.3); 
             border: 1px solid var(--border-color);
             padding: 18px 22px;
             border-radius: 14px;
@@ -253,83 +213,59 @@
             font-size: 15px;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             cursor: pointer;
             position: relative;
         }
 
         .site-item:hover {
-            background: rgba(10, 15, 28, 0.6);
-            border-color: rgba(59, 130, 246, 0.3);
+            background: rgba(15, 23, 42, 0.5);
+            border-color: rgba(59, 130, 246, 0.25);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
 
-        /* Styling Icon di sebelah kiri teks */
         .site-icon {
             width: 20px;
             height: 20px;
             object-fit: contain;
-            margin-right: 12px; /* Jarak antara icon dan teks */
+            margin-right: 12px;
+            opacity: 0.8;
         }
 
-        /* Panah kanan diposisikan absolut di ujung kanan tombol */
         .site-item::after {
             content: "→";
             font-size: 16px;
             color: var(--text-muted);
-            opacity: 0.4;
-            transition: all 0.25s ease;
+            opacity: 0.3;
+            transition: all 0.3s ease;
             position: absolute;
             right: 22px;
         }
 
         .site-item:hover::after {
             color: var(--accent-primary);
-            opacity: 1;
-            transform: translateX(3px);
+            opacity: 0.8;
+            transform: translateX(2px);
         }
 
-        /* --- RIPPLE OVERLAY TRANSISI --- */
-        .transition-overlay {
+        /* --- OVERLAY FADE ELEGAN TAMPAK SENYAP --- */
+        .fade-overlay {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            width: 2px;
-            height: 2px;
-            background: radial-gradient(circle, rgba(37, 99, 235, 0.9) 0%, rgba(3, 6, 14, 1) 70%);
-            border-radius: 50%;
-            transform: translate(-50%, -50%) scale(0);
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg-color);
             z-index: 9999;
             pointer-events: none;
             opacity: 0;
+            transition: opacity 0.45s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .transition-overlay.animate {
-            animation: rippleExpand 1s cubic-bezier(0.25, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes rippleExpand {
-            0% {
-                transform: translate(-50%, -50%) scale(0);
-                opacity: 0.8;
-            }
-            40% {
-                transform: translate(-50%, -50%) scale(1500);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1500);
-                opacity: 0;
-            }
-        }
-
-        @media (max-width: 480px) {
-            body { padding: 40px 16px; }
-            h1 { font-size: 32px; }
-            .start-btn { padding: 16px 36px; font-size: 16px; }
-            .site-item { padding: 16px 18px; }
+        .fade-overlay.visible {
+            opacity: 0.85; /* Meredupkan layar dengan halus, tidak langsung hitam pekat kelam */
         }
     </style>
 </head>
@@ -337,29 +273,24 @@
 
     <div class="bg-wrapper">
         <div class="aurora"></div>
-        <div class="tech-shape shape-1"></div>
-        <div class="tech-shape shape-2"></div>
-        <div class="tech-shape shape-3"></div>
-        <div class="tech-shape shape-4"></div>
-        <div class="tech-shape shape-5"></div>
     </div>
 
-    <div id="overlay" class="transition-overlay"></div>
+    <div id="transition-overlay" class="fade-overlay"></div>
 
     <div class="content-wrapper">
         <header>
             <h1 data-text="NontonYuk">NontonYuk</h1>
-            <p class="subtitle">Akses cepat ke situs streaming andalan kamu</p>
+            <p class="subtitle">Khusus untuk jiel.</p>
         </header>
 
         <div id="welcome-page" class="page active">
             <div class="center-btn-wrapper">
-                <button class="start-btn" onclick="triggerTransition()">Mulai Nonton!</button>
+                <button class="start-btn" onclick="triggerFadeTransition()">Mulai Nonton!</button>
             </div>
         </div>
 
         <div id="menu-page" class="page">
-            <div class="section-title">Pilih Bioskop Tujuanmu</div>
+            <div class="section-title">Pilih Bioskop Favorit Kamu ❤️</div>
             <div class="site-list">
                 <a class="site-item" href="https://z2.idlixku.com/">
                     <img class="site-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAVFBMVEUMDAwKDAwACAkACwvwKiSuHxrtKiPJJB/gKCLzKyS4IRxdExGRGxepHhrWJiCjHhqXGxfaJiEABgdVEhAAAQV9GBW6IR3kKCLHIx+dHBiLGhc2Dg2TxZPiAAAAhklEQVR4AWIYBQCqh8EAYBi2YGln1v/fOTM2boAddnWau/Hm8ABCBDiNNwvIuQirTCvEouS8Kmp6k9JI24kqtyR3PesB4Zcsx5r7PdmMmifK/sm525LjyA2ImG+SG9GKrXW+lq50SjJ4k0No27YZVTt0bT7EpPtvK+0PAOJpENI6ooJnFAAAaNcEza0XWwYAAAAASUVORK5CYII=" alt="Idlix Icon">
@@ -374,24 +305,25 @@
     </div>
 
     <script>
-        function triggerTransition() {
-            const overlay = document.getElementById('overlay');
+        function triggerFadeTransition() {
+            const overlay = document.getElementById('transition-overlay');
             const welcomePage = document.getElementById('welcome-page');
             const menuPage = document.getElementById('menu-page');
 
-            // 1. Jalankan animasi ripple lingkaran membesar
-            overlay.classList.add('animate');
+            // 1. Munculkan overlay peredup hitam transparan secara lembut
+            overlay.classList.add('visible');
 
-            // 2. Pada milidetik ke-400 (saat lingkaran menutup layar penuh), tukar halaman
+            // 2. Di tengah redup (milidetik ke-400), ganti konten halaman diam-diam
             setTimeout(() => {
                 welcomePage.classList.remove('active');
                 menuPage.classList.add('active');
+                
+                // 3. Hilangkan kembali overlay peredup agar halaman baru memudar muncul (fade-in)
+                setTimeout(() => {
+                    overlay.classList.remove('visible');
+                }, 50);
+                
             }, 400);
-
-            // 3. Bersihkan class setelah seluruh rangkaian animasi selesai (1 detik)
-            setTimeout(() => {
-                overlay.classList.remove('animate');
-            }, 1000);
         }
     </script>
 </body>
