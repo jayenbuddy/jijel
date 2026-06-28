@@ -16,7 +16,7 @@
             --text-muted: #9ca3af;
             --accent-primary: #3b82f6;
             --accent-gradient: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-            --shape-bg: rgba(59, 130, 246, 0.02); /* Lebih redup */
+            --shape-bg: rgba(59, 130, 246, 0.02);
         }
 
         body {
@@ -34,7 +34,7 @@
             position: relative;
         }
 
-        /* --- EFEK BACKGROUND AMBIENT REDUP --- */
+        /* --- BACKGROUND --- */
         .bg-wrapper {
             position: fixed;
             top: 0;
@@ -52,7 +52,6 @@
             height: 140%;
             top: -20%;
             left: -20%;
-            /* Opacity diturunkan menjadi 0.12 agar tidak terlalu terang */
             background-image: 
                 radial-gradient(circle at 15% 25%, rgba(13, 148, 136, 0.12) 0%, transparent 45%),
                 radial-gradient(circle at 80% 35%, rgba(37, 99, 235, 0.12) 0%, transparent 45%),
@@ -67,25 +66,10 @@
             100% { transform: rotate(45deg) scale(1.05); }
         }
 
-        /* --- TATA LETAK UTAMA --- */
         .content-wrapper {
             max-width: 600px;
             width: 100%;
             z-index: 1;
-        }
-
-        /* Sistem Animasi Halaman SPA */
-        .page {
-            display: none;
-            opacity: 0;
-            transform: translateY(8px);
-            transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        .page.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
         }
 
         header {
@@ -105,7 +89,6 @@
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
-        /* Glitch halus disederhanakan agar tidak terlalu silau */
         h1::before, h1::after {
             content: attr(data-text);
             position: absolute;
@@ -144,11 +127,51 @@
             100% { clip: rect(0px, 0px, 0px, 0); }
         }
 
+        /* --- PERBAIKAN ANIMASI TYPEWRITER (REALISTIK) --- */
+        .subtitle-container {
+            display: flex;
+            justify-content: center;
+        }
+
         .subtitle {
             color: var(--text-muted);
             font-size: 14px;
             margin: 0;
             text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+            
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 2px solid var(--accent-primary);
+            width: 0;
+            /* steps(19) memotong animasi per karakter agar terasa patah-patah seperti mengetik */
+            animation: 
+                typing 2.2s steps(19) 0.5s forwards,
+                blink 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 135px; } 
+        }
+
+        @keyframes blink {
+            from, to { border-color: transparent; }
+            50% { border-color: var(--accent-primary); }
+        }
+
+        /* --- SPA PAGES --- */
+        .page {
+            display: none;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .section-title {
@@ -161,7 +184,7 @@
             text-align: center;
         }
 
-        /* --- TOMBOL MULAI --- */
+        /* --- BUTTONS & HOVERS --- */
         .center-btn-wrapper {
             display: flex;
             justify-content: center;
@@ -192,7 +215,6 @@
             box-shadow: 0 6px 25px rgba(37, 99, 235, 0.15);
         }
 
-        /* --- LIST SITE MENU --- */
         .site-list {
             display: flex;
             flex-direction: column;
@@ -213,17 +235,20 @@
             font-size: 15px;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.22, 1);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             cursor: pointer;
             position: relative;
         }
 
         .site-item:hover {
-            background: rgba(15, 23, 42, 0.5);
-            border-color: rgba(59, 130, 246, 0.25);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: rgba(37, 99, 235, 0.08); 
+            border-color: rgba(59, 130, 246, 0.4); 
+            transform: translateY(-4px) scale(1.01); 
+            color: #ffffff;
+            box-shadow: 
+                0 12px 25px rgba(37, 99, 235, 0.15), 
+                inset 0 0 12px rgba(59, 130, 246, 0.1);
         }
 
         .site-icon {
@@ -232,6 +257,12 @@
             object-fit: contain;
             margin-right: 12px;
             opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .site-item:hover .site-icon {
+            opacity: 1;
+            transform: scale(1.1);
         }
 
         .site-item::after {
@@ -247,10 +278,9 @@
         .site-item:hover::after {
             color: var(--accent-primary);
             opacity: 0.8;
-            transform: translateX(2px);
+            transform: translateX(4px);
         }
 
-        /* --- OVERLAY FADE ELEGAN TAMPAK SENYAP --- */
         .fade-overlay {
             position: fixed;
             top: 0;
@@ -265,7 +295,7 @@
         }
 
         .fade-overlay.visible {
-            opacity: 0.85; /* Meredupkan layar dengan halus */
+            opacity: 0.85; 
         }
     </style>
 </head>
@@ -280,7 +310,9 @@
     <div class="content-wrapper">
         <header>
             <h1 data-text="NontonYuk">NontonYuk</h1>
-            <p class="subtitle">Khusus untuk jiel.</p>
+            <div class="subtitle-container">
+                <p class="subtitle">Khusus untuk jiel.</p>
+            </div>
         </header>
 
         <div id="welcome-page" class="page active">
@@ -300,7 +332,6 @@
                     <img class="site-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACCklEQVR4AY3PA5AdQRRG4X6Ibdu21ruF2LZt27Zt206/uBDbttdm5/QEa3TVV7z/qRmRlGdNkUIzoRz2YD4EkjTUsmEYXkBha6yAe5ESWio0QhctqGipKuYUKUpzeBVhUDEDUcdaM/hAad5FSq5PnTKl/uz3UIkFsuMqVBRbnhQsauZwAiLiDxQkUKBETffCJb7GDAgev5Gb41U4ZEmR/JApmbV7qjTphbCahQiTdiLsvF2+0GO12ni5lWlJ7BjDoH8BmIL5QpPFzLUwDW00M83ibnvqL+2+rxKMgBWLERJ2we5MyI4arT3KlOzlXqjEPcZrYbLVGSbW9D5mXtZ9f1VGOxCAs8iiA3XwHcpgs/MitDFgapX6/FKxdd03Cw7zYhY+Q2kIwkgdmIYIqChCImx209RNe9OavtvFiq5723DsBRXDKR0ogydQCI+QdncCpF2fVdKl7TTpWDf/0S81Su57323KoONtlnfbqz87BAruaKoDWv9wafca049IpwaTpOvaydLVl8CGgkc+jStw5EtwvqNfj1bf+qL5wp4HBi7rtvch45VIbgSUrJXmnnSoOlW6TmD4dop0VVqUgNLyH/nyi9CKZgtvOq/ttCsLAWE8RlotRu5QcQWiCCPUreDhLyLXie/CeBxrKbE9jsD4GIHryA09jRIAHPArSmBtwSOfR0YZh6IHhKbfbxDamnxfvoyYAAAAAElFTkSuQmCC" alt="LK21 Icon">
                     LK21
                 </a>
-                <!-- Link Menu YouTube Tambahan Terbaru -->
                 <a class="site-item" href="https://www.youtube.com/">
                     <img class="site-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABJklEQVR4Ae2WpVaFQRSFcaeS4QVwIjTiLbgk7D1w9xeg4FQcOu6acHeXtNnDmsFd7in/WetLI+f7dbYDAFEsAUvgoeAQ5k5iSQFpIH1kkMyQFXJMTsgpwTuc6jlHes2M3qNP71mge7g76DLNg8gygZ1QckGmuSdZJ7Azq8RDCSQTCJGgBCoFBWqVQLegQJcSmPnWIr9oICMXcIr4C4FJJbD9rUX+NtzX+CIQlfVbgS0lcP4jAVNt/UCA7acCZ0oAPxfQdXMLFNUBvpHflvgbAVM7h0B6zrfeD3kB+Ucg/xLKf4biPyLJX3GH9GFUogRSBQUSTSBZEwskQpFs1USyl6E0gRSRJtJPhsnci1B69oVQeqzXzOo9+kmj3juBeDw2BkSxBCyBO+9s03HRLVCoAAAAAElFTkSuQmCC" alt="YouTube Icon">
                     YouTube
@@ -315,15 +346,12 @@
             const welcomePage = document.getElementById('welcome-page');
             const menuPage = document.getElementById('menu-page');
 
-            // 1. Munculkan overlay peredup hitam transparan secara lembut
             overlay.classList.add('visible');
 
-            // 2. Di tengah redup (milidetik ke-400), ganti konten halaman diam-diam
             setTimeout(() => {
                 welcomePage.classList.remove('active');
                 menuPage.classList.add('active');
                 
-                // 3. Hilangkan kembali overlay peredup agar halaman baru memudar muncul (fade-in)
                 setTimeout(() => {
                     overlay.classList.remove('visible');
                 }, 50);
